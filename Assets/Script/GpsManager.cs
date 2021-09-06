@@ -58,7 +58,7 @@ public class GpsManager : MonoBehaviour
                 location = Input.location.lastData;
                 current_Lat = location.latitude * 1.0d;
                 current_Long = location.longitude * 1.0d;
-                Debug.Log("latitude : " + current_Lat + "longitude : " + current_Long);
+                //Debug.Log("latitude : " + current_Lat + ", longitude : " + current_Long);
                 yield return second;
             }
         }
