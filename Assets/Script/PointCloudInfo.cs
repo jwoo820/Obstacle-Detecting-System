@@ -1,51 +1,36 @@
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-
+using System.Collections;
+using System.Collections.Generic;
 public class PointCloudInfo : MonoBehaviour
 {
-    // The AR Foundation PointCloud script
-    private ARPointCloud _pointCloud;
+    public ARSessionOrigin _arSessionOrigin;
+    public ARPointCloud _arPointCloud;
 
-    // Reference to logging UI element in the canvas
-    public UnityEngine.UI.Text Log;
+    int _totalNum;
+    LinkedList<Vector3> _featurePoints;
 
-    void OnEnable()
+    private void Start()
     {
-        // Subscribe to event when point cloud changed
-        _pointCloud = GetComponent<ARPointCloud>();
-        _pointCloud.updated += OnPointCloudChanged;
+        _arSessionOrigin = GetComponent<ARSessionOrigin>();
+
+        _arPointCloud = _arSessionOrigin.trackablesParent.GetComponentInChildren<ARPointCloud>();
     }
 
-    void OnDisable()
+    private void Update()
     {
-        // Unsubscribe event when this element is disabled
-        _pointCloud.updated -= OnPointCloudChanged;
-    }
-
-    private void OnPointCloudChanged(ARPointCloudUpdatedEventArgs eventArgs)
-    {
-        if (!_pointCloud.positions.HasValue ||
-            !_pointCloud.identifiers.HasValue ||
-            !_pointCloud.confidenceValues.HasValue)
+        _arPointCloud = _arSessionOrigin.trackablesParent.GetComponentInChildren<ARPointCloud>();
+        _featurePoints = new LinkedList<Vector3>(_arPointCloud.positions);
+        if(_featurePoints.Count == 0)
+        {
             return;
-
-        var positions = _pointCloud.positions.Value;
-        var identifiers = _pointCloud.identifiers.Value;
-        var confidence = _pointCloud.confidenceValues.Value;
-
-        if (positions.Length == 0) return;
-
-        var logText = "Number of points: " + positions.Length + "\nPoint info: x = "
-                   + positions[0].x + ", y = " + positions[0].y + ", z = " + positions[0].z
-                   + ",\n Identifier = " + identifiers[0] + ", Confidence = " + confidence[0];
-
-        if (Log)
-        {
-            Log.text = logText;
         }
-        else
+        foreach (Vector3 i in _featurePoints)
         {
-            Debug.Log(logText);
+            Debug.Log("Point Cloud Position : " + i);
         }
+        _totalNum = _featurePoints.Count;
+
+        Debug.Log("Point Cloud Count : " + _totalNum);
     }
 }

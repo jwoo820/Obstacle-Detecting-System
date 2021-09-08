@@ -132,7 +132,6 @@ public class ClassificationPlane : MonoBehaviour
                 c_max = c_cnt;
                 _referenceY = tmp_y;
             }
-
             c_cnt = 0;
         }
         //Debug.Log("reference Y : " + _referenceY);

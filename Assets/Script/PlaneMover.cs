@@ -29,7 +29,7 @@ public class PlaneMover : MonoBehaviour
 
         _real = new Vector3(0, _convert.y, 0);
         transform.rotation = Quaternion.Euler(_real);
-        Debug.Log("Reference Y axis : " + ClassificationPlane._referenceY);
+        //Debug.Log("Reference Plane Y axis : " + ClassificationPlane._referenceY);
         transform.position = new Vector3(_mainCam.transform.position.x, ClassificationPlane._referenceY, _mainCam.transform.position.z);
     }
 }
