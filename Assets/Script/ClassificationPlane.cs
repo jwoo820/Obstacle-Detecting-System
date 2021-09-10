@@ -33,9 +33,9 @@ public class ClassificationPlane : MonoBehaviour
     {
         //UpdateLabel();
         //UpdatePlaneColor();
-        
-        Ransac();
+
         UpdatePlaneCenter();
+        Ransac();
     }
 
     void UpdateLabel()
@@ -115,7 +115,7 @@ public class ClassificationPlane : MonoBehaviour
 
         int y_cnt = _planeCenterList.Count;
         float tmp_y = 0;
-
+        Debug.Log("Plane Center List : " + _planeCenterList.Count);
         foreach(Vector3 i in _planeCenterList)
         {
             tmp_y = i.y;
@@ -134,6 +134,6 @@ public class ClassificationPlane : MonoBehaviour
             }
             c_cnt = 0;
         }
-        //Debug.Log("reference Y : " + _referenceY);
+        Debug.Log("reference Y : " + _referenceY);
     }
 }

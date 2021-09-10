@@ -25,12 +25,12 @@ public class PointCloudInfo : MonoBehaviour
         {
             return;
         }
-        foreach (Vector3 i in _featurePoints)
-        {
-            Debug.Log("Point Cloud Position : " + i);
-        }
+        //foreach (Vector3 i in _featurePoints)
+        //{
+        //    Debug.Log("Point Cloud Position : " + i);
+        //}
         _totalNum = _featurePoints.Count;
 
-        Debug.Log("Point Cloud Count : " + _totalNum);
+        //Debug.Log("Point Cloud Count : " + _totalNum);
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2618206030181260020}
   - component: {fileID: 2618206030181260021}
   - component: {fileID: 2618206030181260022}
+  - component: {fileID: 8417833117166769312}
   m_Layer: 0
   m_Name: AR Point Cloud
   m_TagString: Untagged
@@ -54,7 +55,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2618206030181259912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 468ea6c98cd64494abbc2c2f34d6cde2, type: 3}
   m_Name: 
@@ -314,7 +315,7 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minColor: {r: 1, g: 0, b: 0, a: 1}
       maxColor: {r: 0.99215686, g: 0.72156864, b: 0.07450981, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -4831,3 +4832,15 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &8417833117166769312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2618206030181259912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934bfadcb92154e118946597231e1cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
