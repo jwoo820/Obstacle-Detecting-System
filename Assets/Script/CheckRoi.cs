@@ -5,7 +5,7 @@ using UnityEngine.XR.ARFoundation;
 
 public class CheckRoi : MonoBehaviour
 {
-    private static float _roiRadius = 3.0f;
+    private static float _roiRadius = 10.0f;
 
     public static bool Check(Vector3 point)
     {

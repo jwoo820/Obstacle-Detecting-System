@@ -17,6 +17,6 @@ public class GetCameraPos : MonoBehaviour
     void Update()
     {
         _userPos = _camera.transform.position;
-        //Debug.Log("x : " + _userPos.x + ", y : " + _userPos.y + ", z : " + _userPos.z);
+        Debug.Log("x : " + _userPos.x + ", y : " + _userPos.y + ", z : " + _userPos.z);
     }
 }

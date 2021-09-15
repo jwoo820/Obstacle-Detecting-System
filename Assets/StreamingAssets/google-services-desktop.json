@@ -1,0 +1,36 @@
+{
+  "client": [
+    {
+      "services": {
+        "appinvite_service": {
+          "status": 1
+        }, 
+        "analytics_service": {
+          "status": 0
+        }
+      }, 
+      "oauth_client": [
+        {
+          "client_id": "228599651651-9ae1dk3k5u0vn0gdte0es46lbh72h64d.apps.googleusercontent.com"
+        }
+      ], 
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVLkPaUMscpJ23j5K-l8pSbSvV0KC9nKs"
+        }
+      ], 
+      "client_info": {
+        "mobilesdk_app_id": "1:228599651651:ios:81ba87c19a37c23ac863f6", 
+        "android_client_info": {
+          "package_name": "com.jwoo820.ARFoundation"
+        }
+      }
+    }
+  ], 
+  "configuration_version": "1", 
+  "project_info": {
+    "storage_bucket": "arfoundation-24c5d.appspot.com", 
+    "project_id": "arfoundation-24c5d", 
+    "project_number": "228599651651"
+  }
+}
