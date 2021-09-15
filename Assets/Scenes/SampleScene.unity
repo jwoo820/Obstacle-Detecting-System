@@ -769,6 +769,7 @@ GameObject:
   - component: {fileID: 2022206397}
   - component: {fileID: 2022206396}
   - component: {fileID: 2022206400}
+  - component: {fileID: 2022206401}
   m_Layer: 0
   m_Name: ReferencePlane
   m_TagString: Untagged
@@ -865,3 +866,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27953b024318346a68fe80c8b2b3cb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2022206401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022206395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491a86ffdb3d14c4282120e2913368f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _obstaclePath: obstacle_sheet/Info
