@@ -10,9 +10,9 @@ public class ClassificationPlane : MonoBehaviour
     // 색깔 변경
     public MeshRenderer _PlaneMeshRenderer;
 
-    public TextMesh _TextMesh;
+    //public TextMesh _TextMesh;
 
-    public GameObject _Textobj;
+    //public GameObject _Textobj;
 
     public LinkedList<Vector3> _planeCenterList = new LinkedList<Vector3>();
     public static float _outlier = 0.2f;
@@ -32,24 +32,34 @@ public class ClassificationPlane : MonoBehaviour
     void Update()
     {
         //UpdateLabel();
-        //UpdatePlaneColor();
+        UpdatePlaneColor();
 
         UpdatePlaneCenter();
         Ransac();
     }
 
-    void UpdateLabel()
-    {
-        _TextMesh.text = _ARPlane.classification.ToString();
-        _Textobj.transform.position = _ARPlane.center;
-        _Textobj.transform.LookAt(_mainCam.transform);
-        _Textobj.transform.Rotate(new Vector3(0, 180, 0));
-    }
+    //void UpdateLabel()
+    //{
+    //    _TextMesh.text = _ARPlane.classification.ToString();
+    //    _Textobj.transform.position = _ARPlane.center;
+    //    _Textobj.transform.LookAt(_mainCam.transform);
+    //    _Textobj.transform.Rotate(new Vector3(0, 180, 0));
+    //}
 
     void UpdatePlaneCenter()
     {
-        _planeCenter = _ARPlane.center;
-        MaxPlaneCenterList(_planeCenter);
+        // 지면 평면만 탐색하기
+        if(_ARPlane.classification == PlaneClassification.Floor)
+        {
+            _planeCenter = _ARPlane.center;
+            Debug.Log("Current Plane Center : " + _planeCenter);
+            MaxPlaneCenterList(_planeCenter);
+        }
+        else
+        {
+            Debug.Log("It's not a Floor");
+        }
+
     }
 
     void MaxPlaneCenterList(Vector3 center)
@@ -60,6 +70,7 @@ public class ClassificationPlane : MonoBehaviour
         {
             _planeCenterList.RemoveFirst();
         }
+        
     }
 
     void UpdatePlaneColor()
@@ -115,9 +126,10 @@ public class ClassificationPlane : MonoBehaviour
 
         int y_cnt = _planeCenterList.Count;
         float tmp_y = 0;
-        Debug.Log("Plane Center List : " + _planeCenterList.Count);
+        //Debug.Log("Plane Center List : " + _planeCenterList.Count);
         foreach(Vector3 i in _planeCenterList)
         {
+            Debug.Log("Current Plane : " + i);
             tmp_y = i.y;
             foreach(Vector3 j in _planeCenterList)
             {
@@ -134,6 +146,6 @@ public class ClassificationPlane : MonoBehaviour
             }
             c_cnt = 0;
         }
-        Debug.Log("reference Y : " + _referenceY);
+        //Debug.Log("reference Y : " + _referenceY);
     }
 }

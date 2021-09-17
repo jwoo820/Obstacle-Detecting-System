@@ -7,57 +7,37 @@ public class SetObstacleData : MonoBehaviour
 {
     [SerializeField] private string _obstaclePath = "obstacle_sheet/Info";
 
+    FirebaseFirestore _firestore;
+
+    ObstacleData _obstacledata;
     void Start()
     {
-        var obstacleData = new ObstacleData
+        _obstacledata = new ObstacleData
         {
-            Latitude = GpsManager.current_Lat,
-            Longitude = GpsManager.current_Long
+            Latitude = 123.123123123213,
+            Longitude = 123.123123123213
         };
-        var firestore = FirebaseFirestore.DefaultInstance;
+        _firestore = FirebaseFirestore.DefaultInstance;
 
-        if (firestore != null)
+        SetData();
+    }
+
+    private void Update()
+    {
+
+    }
+
+    void SetData()
+    {
+        if (_firestore != null)
         {
             Debug.Log("firestore success");
-            firestore.Document(_obstaclePath).SetAsync(obstacleData);
+            _firestore.Document(_obstaclePath).SetAsync(_obstacledata);
         }
 
         else
         {
             Debug.Log("firestore fail");
-        }
-    }
-
-    private void Update()
-    {
-        if (GpsManager.current_Lat == 0)
-        {
-            return;
-        }
-        else if (GpsManager.current_Long == 0)
-        {
-            return;
-        }
-
-        else
-        {
-            var obstacleData = new ObstacleData
-            {
-                Latitude = GpsManager.current_Lat,
-                Longitude = GpsManager.current_Long
-            };
-            var firestore = FirebaseFirestore.DefaultInstance;
-
-            if (firestore != null)
-            {
-                Debug.Log("firestore success");
-                firestore.Document(_obstaclePath).SetAsync(obstacleData);
-            }
-
-            else
-            {
-                Debug.Log("firestore fail");
-            }
         }
     }
 }

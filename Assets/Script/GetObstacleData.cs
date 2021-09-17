@@ -19,9 +19,9 @@ public class GetObstacleData : MonoBehaviour
 
             var obstacleData = task.Result.ConvertTo<ObstacleData>();
 
-            Debug.Log("Attack : " + obstacleData.Latitude);
+            Debug.Log("Latitude : " + obstacleData.Latitude);
 
-            Debug.Log("Attack : " + obstacleData.Longitude);
+            Debug.Log("Longitude : " + obstacleData.Longitude);
         });
     }
 
