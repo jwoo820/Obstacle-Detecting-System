@@ -17,7 +17,7 @@ public class GpsManager : MonoBehaviour
 
     private void Awake()
     {
-        second = new WaitForSeconds(1.0f);
+        second = new WaitForSeconds(.2f);
     }
 
     IEnumerator Start()

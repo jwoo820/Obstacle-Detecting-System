@@ -12,16 +12,29 @@ public class PointCloudVisualization : MonoBehaviour
     ParticleSystem.Particle[] _particles;
     int _numParticles;
     static List<Vector3> _vertices = new List<Vector3>();
+    static List<Vector3> _obstaclePoints = new List<Vector3>();
+    public static int _obstaclePointNum;
     private float _criteria;
     void OnPointCloudChanged(ARPointCloudUpdatedEventArgs eventArgs)
-    { 
+    {
         var points = _vertices;
         points.Clear();
         _criteria = ClassificationPlane._referenceY;
         if (_pointCloud.positions.HasValue)
         {
             foreach (var point in _pointCloud.positions.Value)
-                _vertices.Add(point);
+            {
+                for(int i=0; i< points.Count; ++i)
+                {
+                    _vertices.Add(point);
+                    if (Mathf.Abs(_criteria - points[i].y) > ClassificationPlane._outlier)
+                    {
+                        _obstaclePoints.Add(point);
+                    }
+                }
+                Debug.Log("Point Cloud Number : " + _vertices.Count);
+                Debug.Log("Obstacle Point : " + _obstaclePoints.Count);
+            }
         }
         int numParticles = points.Count;
         if (_particles == null || _particles.Length < numParticles)
@@ -31,14 +44,23 @@ public class PointCloudVisualization : MonoBehaviour
         var obstacleColor = Color.red;
         var size = _particleSystem.main.startSize.constant;
 
-        for(int i = 0; i < numParticles; ++i)
+        for (int i = 0; i < numParticles; ++i)
         {
-            if(Mathf.Abs(_criteria - points[i].y) > ClassificationPlane._outlier)
+            if (Mathf.Abs(_criteria - points[i].y) > ClassificationPlane._outlier)
             {
+                //if (_pointCloud.positions.HasValue)
+                //{
+                //    foreach (var point in _pointCloud.positions.Value)
+                //    {
+                //        _obstaclePoints.Add(point);
+                //    }
+                //}
+                //_obstaclePointNum = _obstaclePoints.Count;
                 _particles[i].startColor = obstacleColor;
                 _particles[i].startSize = size;
                 _particles[i].position = points[i];
                 _particles[i].remainingLifetime = 1f;
+                //Debug.Log("Current ObstaclePoint Num :  " + _obstaclePointNum);
             }
             else
             {
@@ -49,9 +71,9 @@ public class PointCloudVisualization : MonoBehaviour
             }
         }
 
-        for(int i=numParticles; i< _numParticles; ++i)
+        for (int i = numParticles; i < _numParticles; ++i)
         {
-            _particles[i].remainingLifetime = - 1f;
+            _particles[i].remainingLifetime = -1f;
         }
         _particleSystem.SetParticles(_particles, Math.Max(numParticles, _numParticles));
         _numParticles = numParticles;

@@ -52,12 +52,11 @@ public class ClassificationPlane : MonoBehaviour
         if(_ARPlane.classification == PlaneClassification.Floor)
         {
             _planeCenter = _ARPlane.center;
-            Debug.Log("Current Plane Center : " + _planeCenter);
             MaxPlaneCenterList(_planeCenter);
         }
         else
         {
-            Debug.Log("It's not a Floor");
+            //Debug.Log("It's not a Floor");
         }
 
     }
@@ -81,7 +80,7 @@ public class ClassificationPlane : MonoBehaviour
         {
             case PlaneClassification.None:
                 planeMatColor = Color.cyan;
-                Debug.Log("None : " + _ARPlane.center);
+                //Debug.Log("None : " + _ARPlane.center);
                 break;
             case PlaneClassification.Wall:
                 planeMatColor = Color.white;
@@ -89,7 +88,7 @@ public class ClassificationPlane : MonoBehaviour
                 break;
             case PlaneClassification.Floor:
                 planeMatColor = Color.green;
-                Debug.Log("Floor : " + _ARPlane.center);
+                //Debug.Log("Floor : " + _ARPlane.center);
                 break;
             case PlaneClassification.Ceiling:
                 planeMatColor = Color.blue;
@@ -129,7 +128,7 @@ public class ClassificationPlane : MonoBehaviour
         //Debug.Log("Plane Center List : " + _planeCenterList.Count);
         foreach(Vector3 i in _planeCenterList)
         {
-            Debug.Log("Current Plane : " + i);
+            //Debug.Log("Current Plane : " + i);
             tmp_y = i.y;
             foreach(Vector3 j in _planeCenterList)
             {
