@@ -30,7 +30,7 @@ public class ClassificationObstacle : MonoBehaviour
         if (_obstaclePointNum > criteria)
         {
             // 휴대폰 진동
-            SaveData();
+            //SaveData();
             Handheld.Vibrate();
         }
     }

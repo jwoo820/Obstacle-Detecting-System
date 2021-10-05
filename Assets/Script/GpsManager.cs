@@ -8,8 +8,7 @@ public class GpsManager : MonoBehaviour
     public static double first_Long;
     public static double current_Lat;
     public static double current_Long;
-    public static float magneticHeading;
-    public static float trueHeading;
+
     private static WaitForSeconds second;
 
     private static bool gpsStarted = false;
