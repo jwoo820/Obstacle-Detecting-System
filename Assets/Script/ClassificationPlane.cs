@@ -63,7 +63,7 @@ public class ClassificationPlane : MonoBehaviour
 
     void MaxPlaneCenterList(Vector3 center)
     {
-        if (!CheckRoi.Check(center)) return;
+        if (!CheckRoi.PlaneCheck(center)) return;
         _planeCenterList.AddLast(center);
         if(_planeCenterList.Count >= _planeCenterCount)
         {
@@ -92,22 +92,22 @@ public class ClassificationPlane : MonoBehaviour
                 break;
             case PlaneClassification.Ceiling:
                 planeMatColor = Color.blue;
-                Debug.Log("Ceiling : " + _ARPlane.center);
+                //Debug.Log("Ceiling : " + _ARPlane.center);
                 break;
             case PlaneClassification.Table:
                 planeMatColor = Color.yellow;
-                Debug.Log("Table : " + _ARPlane.center);
+                //Debug.Log("Table : " + _ARPlane.center);
                 break;
             case PlaneClassification.Seat:
                 planeMatColor = Color.magenta;
-                Debug.Log("Seat : " + _ARPlane.center);
+                //Debug.Log("Seat : " + _ARPlane.center);
                 break;
             case PlaneClassification.Door:
-                Debug.Log("Door : " + _ARPlane.center);
+                //Debug.Log("Door : " + _ARPlane.center);
                 planeMatColor = Color.red;
                 break;
             case PlaneClassification.Window:
-                Debug.Log("Window : " + _ARPlane.center);
+                //Debug.Log("Window : " + _ARPlane.center);
                 planeMatColor = Color.clear;
                 break;
         }

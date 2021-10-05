@@ -10,12 +10,15 @@ public class SetObstacleData : MonoBehaviour
     FirebaseFirestore _firestore;
 
     ObstacleData _obstacledata;
+    
     void Start()
     {
+        double lat = GpsManager.current_Lat;
+        double lng = GpsManager.current_Long;
         _obstacledata = new ObstacleData
         {
-            Latitude = 123.123123123213,
-            Longitude = 123.123123123213
+            Latitude = lat,
+            Longitude = lng,
         };
         _firestore = FirebaseFirestore.DefaultInstance;
 

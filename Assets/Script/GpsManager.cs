@@ -8,7 +8,8 @@ public class GpsManager : MonoBehaviour
     public static double first_Long;
     public static double current_Lat;
     public static double current_Long;
-
+    public static float magneticHeading;
+    public static float trueHeading;
     private static WaitForSeconds second;
 
     private static bool gpsStarted = false;
@@ -18,6 +19,9 @@ public class GpsManager : MonoBehaviour
     private void Awake()
     {
         second = new WaitForSeconds(.2f);
+        // 나침반
+        Input.location.Start();
+        Input.compass.enabled = true;
     }
 
     IEnumerator Start()

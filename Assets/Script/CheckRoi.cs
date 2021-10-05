@@ -5,13 +5,22 @@ using UnityEngine.XR.ARFoundation;
 
 public class CheckRoi : MonoBehaviour
 {
-    private static float _roiRadius = 7.0f;
+    private static float _planeROI = 5.0f;
+    private static float _obstacleROI = 3.0f;
 
-    public static bool Check(Vector3 point)
+    public static bool PlaneCheck(Vector3 point)
     {
         Vector3 check = GetCameraPos._userPos - point;
         float size = Vector3.Magnitude(check);
-        if (size > _roiRadius) return false;
+        if (size > _planeROI) return false;
+        else return true;
+    }
+
+    public static bool ObstacleCheck(Vector3 point)
+    {
+        Vector3 check = GetCameraPos._userPos - point;
+        float size = Vector3.Magnitude(check);
+        if (size > _obstacleROI) return false;
         else return true;
     }
 }
