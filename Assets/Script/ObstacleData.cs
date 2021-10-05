@@ -37,4 +37,8 @@ public struct ObstacleData
 
     public float rotation_z { get; set; }
 
+    [FirestoreProperty]
+
+    public string compass { get; set; }
+
 }

@@ -6,13 +6,14 @@ using TMPro;
 public class CompassBehaviour : MonoBehaviour
 {
     private bool startTracking = false;
-    public TextMeshPro headingText;
+    public static string curr_compass;
     // Start is called before the first frame update
     void Start()
     {
         Input.compass.enabled = true;
         Input.location.Start();
         StartCoroutine(InitializeCompass());
+        curr_compass = "";
     }
 
     // Update is called once per frame
@@ -21,8 +22,7 @@ public class CompassBehaviour : MonoBehaviour
         if (startTracking)
         {
             transform.rotation = Quaternion.Euler(0, Input.compass.trueHeading, 0);
-            headingText.text = ((int)Input.compass.trueHeading).ToString() + "° " + DegreesToCardinalDetailed(Input.compass.trueHeading);
-            Debug.Log(((int)Input.compass.trueHeading).ToString() + "° " + DegreesToCardinalDetailed(Input.compass.trueHeading));
+            curr_compass = ((int)Input.compass.trueHeading).ToString() + "° " + DegreesToCardinalDetailed(Input.compass.trueHeading);
         }
     }
 

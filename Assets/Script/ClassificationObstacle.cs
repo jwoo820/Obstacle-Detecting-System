@@ -15,9 +15,13 @@ public class ClassificationObstacle : MonoBehaviour
     FirebaseFirestore db;
     private static WaitForSeconds second;
     private int criteria;
+    public GameObject AlertPanel;
+    
     IEnumerator Start()
     {
-        criteria = 20;
+        AlertPanel = GameObject.Find("AlertPanel");
+        AlertPanel.SetActive(false);
+        criteria = 30;
         db = FirebaseFirestore.DefaultInstance;
         yield return new WaitForSeconds(4f);
         Debug.Log("4초 지났다");
@@ -31,7 +35,13 @@ public class ClassificationObstacle : MonoBehaviour
         {
             // 휴대폰 진동
             //SaveData();
+            Debug.Log("장애물 찾음 !~~~");
+            AlertPanel.SetActive(true);
             Handheld.Vibrate();
+        }
+        else
+        {
+            AlertPanel.SetActive(false);
         }
     }
 
@@ -66,7 +76,8 @@ public class ClassificationObstacle : MonoBehaviour
             position_z = GetObstaclePosition().z,
             rotation_x = GetCameraPos._userRot.x,
             rotation_y = GetCameraPos._userRot.y,
-            rotation_z = GetCameraPos._userRot.z
+            rotation_z = GetCameraPos._userRot.z,
+            compass = CompassBehaviour.curr_compass
         };
         // 디비 저장
         db.Collection("data").AddAsync(data).ContinueWithOnMainThread(task =>
@@ -74,5 +85,9 @@ public class ClassificationObstacle : MonoBehaviour
             DocumentReference addedDocRef = task.Result;
             Debug.Log("success!");
         });
+    }
+    private void ReadData()
+    {
+        //    Query allQuery = db.Collection("data").WhereEqualTo("", )
     }
 }

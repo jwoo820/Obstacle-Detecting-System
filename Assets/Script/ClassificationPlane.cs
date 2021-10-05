@@ -8,7 +8,7 @@ public class ClassificationPlane : MonoBehaviour
 {
     public ARPlane _ARPlane;
     // 색깔 변경
-    public MeshRenderer _PlaneMeshRenderer;
+    //public MeshRenderer _PlaneMeshRenderer;
 
     //public TextMesh _TextMesh;
 
@@ -18,7 +18,7 @@ public class ClassificationPlane : MonoBehaviour
     public static float _outlier = 0.2f;
     public static LinkedList<float> _yAxis = new LinkedList<float>();
     private static int _planeCenterCount = 100;
-    public Vector3 _planeCenter = new Vector3();
+    private Vector3 _planeCenter = new Vector3();
     public static float _referenceY = 0;
     GameObject _mainCam;
 
@@ -32,7 +32,7 @@ public class ClassificationPlane : MonoBehaviour
     void Update()
     {
         //UpdateLabel();
-        UpdatePlaneColor();
+        //UpdatePlaneColor();
 
         UpdatePlaneCenter();
         Ransac();
@@ -49,7 +49,7 @@ public class ClassificationPlane : MonoBehaviour
     void UpdatePlaneCenter()
     {
         // 지면 평면만 탐색하기
-        if(_ARPlane.classification == PlaneClassification.Floor)
+        if (_ARPlane.classification == PlaneClassification.Floor)
         {
             _planeCenter = _ARPlane.center;
             MaxPlaneCenterList(_planeCenter);
@@ -65,18 +65,18 @@ public class ClassificationPlane : MonoBehaviour
     {
         if (!CheckRoi.PlaneCheck(center)) return;
         _planeCenterList.AddLast(center);
-        if(_planeCenterList.Count >= _planeCenterCount)
+        if (_planeCenterList.Count >= _planeCenterCount)
         {
             _planeCenterList.RemoveFirst();
         }
-        
+
     }
 
     void UpdatePlaneColor()
     {
         Color planeMatColor = Color.cyan;
 
-        switch(_ARPlane.classification)
+        switch (_ARPlane.classification)
         {
             case PlaneClassification.None:
                 planeMatColor = Color.cyan;
@@ -112,7 +112,7 @@ public class ClassificationPlane : MonoBehaviour
                 break;
         }
         planeMatColor.a = 0.33f;
-        _PlaneMeshRenderer.material.color = planeMatColor;
+        //_PlaneMeshRenderer.material.color = planeMatColor;
     }
 
     void Ransac()
@@ -126,19 +126,19 @@ public class ClassificationPlane : MonoBehaviour
         int y_cnt = _planeCenterList.Count;
         float tmp_y = 0;
         //Debug.Log("Plane Center List : " + _planeCenterList.Count);
-        foreach(Vector3 i in _planeCenterList)
+        foreach (Vector3 i in _planeCenterList)
         {
             //Debug.Log("Current Plane : " + i);
             tmp_y = i.y;
-            foreach(Vector3 j in _planeCenterList)
+            foreach (Vector3 j in _planeCenterList)
             {
-                if(Math.Abs(tmp_y - j.y) <= T)
+                if (Math.Abs(tmp_y - j.y) <= T)
                 {
                     c_cnt++;
                 }
             }
 
-            if(c_cnt > c_max)
+            if (c_cnt > c_max)
             {
                 c_max = c_cnt;
                 _referenceY = tmp_y;
