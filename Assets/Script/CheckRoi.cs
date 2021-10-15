@@ -10,17 +10,15 @@ public class CheckRoi : MonoBehaviour
 
     public static bool PlaneCheck(Vector3 point)
     {
-        Vector3 check = GetCameraPos._userPos - point;
-        float size = Vector3.Magnitude(check);
+        float size = Vector3.Distance(GetCameraPos._userPos, point);
         if (size > _planeROI) return false;
         else return true;
     }
 
     public static bool ObstacleCheck(Vector3 point)
     {
-        Vector3 check = GetCameraPos._userPos - point;
-        float size = Vector3.Magnitude(check);
+        float size = Vector3.Distance(GetCameraPos._userPos, point);
         if (size > _obstacleROI) return false;
-        else return true;
+        else return true;        
     }
 }

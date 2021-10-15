@@ -7,6 +7,7 @@ public class CompassBehaviour : MonoBehaviour
 {
     private bool startTracking = false;
     public static string curr_compass;
+    public static int _compass;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +23,7 @@ public class CompassBehaviour : MonoBehaviour
         if (startTracking)
         {
             transform.rotation = Quaternion.Euler(0, Input.compass.trueHeading, 0);
+            _compass = (int)Input.compass.trueHeading;
             curr_compass = ((int)Input.compass.trueHeading).ToString() + "° " + DegreesToCardinalDetailed(Input.compass.trueHeading);
         }
     }

@@ -9,6 +9,7 @@ public class CompassText : MonoBehaviour
     void Start()
     {
         Compass = GameObject.Find("InfoText").GetComponent<Text>();
+        Compass.color = Color.green;
 
     }
 
@@ -20,6 +21,10 @@ public class CompassText : MonoBehaviour
 
     void SetText()
     {
-        Compass.text = CompassBehaviour.curr_compass;
+        Compass.text = CompassBehaviour.curr_compass
+            + "\n Latitude : "
+            + GpsManager.current_Lat
+            +"\n Longitude : "
+            + GpsManager.current_Long;
     }
 }

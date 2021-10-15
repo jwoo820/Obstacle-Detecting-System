@@ -7,11 +7,11 @@ public struct ObstacleData
 {
     [FirestoreProperty]
 
-    public double Latitude { get; set; }
+    public float Latitude { get; set; }
 
     [FirestoreProperty]
 
-    public double Longitude { get; set; }
+    public float Longitude { get; set; }
 
     [FirestoreProperty]
 
@@ -19,26 +19,18 @@ public struct ObstacleData
 
     [FirestoreProperty]
 
-    public float position_y { get; set; }
-
-    [FirestoreProperty]
-
     public float position_z { get; set; }
 
     [FirestoreProperty]
 
-    public float rotation_x { get; set; }
-
-    [FirestoreProperty]
-
-    public float rotation_y { get; set; }
-
-    [FirestoreProperty]
-
-    public float rotation_z { get; set; }
-
-    [FirestoreProperty]
-
     public string compass { get; set; }
+
+    [FirestoreProperty]
+
+    public float obstacleDis { get; set; }
+
+    [FirestoreProperty]
+
+    public string obGPS { get; set; }
 
 }

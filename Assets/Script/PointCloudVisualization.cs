@@ -38,12 +38,6 @@ public class PointCloudVisualization : MonoBehaviour
                 _vertices.Add(point);
             }
         }
-        // if -> obstacle 이 20개 이상일때?? -> 이친구의 중심좌표를 저장(연산과정이 필요, 하나의 좌표)
-        //_obstaclePointNum = _obstaclePoints.Count; 
-        //Debug.Log("Obstacle Num : " + _obstaclePoints.Count);
-        // 여기서 vertices는 실시간 계산되서 갯수가 계속해서 바뀜
-
-
 
         int numParticles = points.Count;
         if (_particles == null || _particles.Length < numParticles)

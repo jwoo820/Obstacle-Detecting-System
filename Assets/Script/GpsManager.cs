@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GpsManager : MonoBehaviour
 {
-    public static double first_Lat;
-    public static double first_Long;
-    public static double current_Lat;
-    public static double current_Long;
-
+    public static float first_Lat;
+    public static float first_Long;
+    public static float current_Lat;
+    public static float current_Long;
+    
     private static WaitForSeconds second;
 
     private static bool gpsStarted = false;
@@ -52,15 +52,16 @@ public class GpsManager : MonoBehaviour
         else
         {
             location = Input.location.lastData;
-            first_Lat = location.latitude * 1.0d;
-            first_Long = location.longitude * 1.0d;
+            first_Lat = location.latitude;
+            first_Long = location.longitude;
             gpsStarted = true;
 
             while (gpsStarted)
             {
                 location = Input.location.lastData;
-                current_Lat = location.latitude * 1.0d;
-                current_Long = location.longitude * 1.0d;
+                current_Lat = location.latitude;
+                current_Long = location.longitude;
+
                 //Debug.Log("latitude : " + current_Lat + ", longitude : " + current_Long);
                 yield return second;
             }

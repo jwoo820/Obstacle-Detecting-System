@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using System;
+using System.Linq;
 public class ClassificationPlane : MonoBehaviour
 {
     public ARPlane _ARPlane;
@@ -14,10 +15,12 @@ public class ClassificationPlane : MonoBehaviour
 
     //public GameObject _Textobj;
 
-    public LinkedList<Vector3> _planeCenterList = new LinkedList<Vector3>();
-    public static float _outlier = 0.2f;
+    public LinkedList<float> _planeCenterList = new LinkedList<float>();
+    // 20cm 이상 떨어졌을 때 obstacle point로 정ㅖ
+    public static float _outlier = 0.15f;
     public static LinkedList<float> _yAxis = new LinkedList<float>();
     private static int _planeCenterCount = 100;
+    List<float> distinctList;
     private Vector3 _planeCenter = new Vector3();
     public static float _referenceY = 0;
     GameObject _mainCam;
@@ -35,7 +38,8 @@ public class ClassificationPlane : MonoBehaviour
         //UpdatePlaneColor();
 
         UpdatePlaneCenter();
-        Ransac();
+        ReferenceY();
+        //Ransac();
     }
 
     //void UpdateLabel()
@@ -64,7 +68,10 @@ public class ClassificationPlane : MonoBehaviour
     void MaxPlaneCenterList(Vector3 center)
     {
         if (!CheckRoi.PlaneCheck(center)) return;
-        _planeCenterList.AddLast(center);
+        _planeCenterList.AddLast(center.y);
+        
+        //distinctList = _planeCenterList.Distinct().ToList();
+
         if (_planeCenterList.Count >= _planeCenterCount)
         {
             _planeCenterList.RemoveFirst();
@@ -124,15 +131,15 @@ public class ClassificationPlane : MonoBehaviour
         if (_planeCenterList.Count == 0) return;
 
         int y_cnt = _planeCenterList.Count;
-        float tmp_y = 0;
+        float tmp_y = 0f;
         //Debug.Log("Plane Center List : " + _planeCenterList.Count);
-        foreach (Vector3 i in _planeCenterList)
+        foreach (var i in _planeCenterList)
         {
-            //Debug.Log("Current Plane : " + i);
-            tmp_y = i.y;
-            foreach (Vector3 j in _planeCenterList)
+            Debug.Log("Current Plane : " + i);
+            tmp_y = i;
+            foreach (var j in _planeCenterList)
             {
-                if (Math.Abs(tmp_y - j.y) <= T)
+                if (Math.Abs(tmp_y - j) <= T)
                 {
                     c_cnt++;
                 }
@@ -145,6 +152,21 @@ public class ClassificationPlane : MonoBehaviour
             }
             c_cnt = 0;
         }
+    }
+
+    void ReferenceY()
+    {
+        float tmp_y = 0f;
+        if (_planeCenterList.Count == 0) return;
+
+        foreach(var i in _planeCenterList)
+        {
+            tmp_y += i;
+        }
+        tmp_y /= _planeCenterList.Count;
+
+        _referenceY = tmp_y;
+        //Debug.Log("List Count : " + _planeCenterList.Count);
         //Debug.Log("reference Y : " + _referenceY);
     }
 }
