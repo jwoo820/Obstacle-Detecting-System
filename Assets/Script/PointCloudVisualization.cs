@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using System;
 using UnityEngine.XR.ARSubsystems;
+using System.Threading.Tasks;
+
 public class PointCloudVisualization : MonoBehaviour
 {
     ARPointCloud _pointCloud;
@@ -28,7 +30,7 @@ public class PointCloudVisualization : MonoBehaviour
         {
             foreach (var point in _pointCloud.positions.Value)
             {
-                if (CheckRoi.ObstacleCheck(point))
+                if (CheckRoi.ROI(point))
                 {
                     if (Mathf.Abs(_criteria - point.y) > ClassificationPlane._outlier)
                     {
@@ -112,5 +114,13 @@ public class PointCloudVisualization : MonoBehaviour
         var renderer = _particleSystem.GetComponent<Renderer>();
         if (renderer != null)
             renderer.enabled = visible;
+    }
+
+    async Task FirstTask()
+    {
+        await Task.Run(() =>
+        {
+            Debug.Log("hi");
+        });
     }
 }

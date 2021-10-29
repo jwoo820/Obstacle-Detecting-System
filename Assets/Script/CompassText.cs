@@ -9,8 +9,6 @@ public class CompassText : MonoBehaviour
     void Start()
     {
         Compass = GameObject.Find("InfoText").GetComponent<Text>();
-        Compass.color = Color.green;
-
     }
 
     // Update is called once per frame

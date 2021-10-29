@@ -4,59 +4,106 @@ using UnityEngine;
 using Firebase.Firestore;
 using Firebase.Extensions;
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class DatabaseBehavior : MonoBehaviour
 {
     FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+    public static bool isReadDb = false;
+
     // Start is called before the first frame update
     public void SaveData()
     {
-        float lat = GpsManager.current_Lat;
-        float lng = GpsManager.current_Long;
-        string collection = lat.ToString() + "x" + lng.ToString();
+        var lat = GpsManager.current_Lat;
+        var lng = GpsManager.current_Long;
+        string collection = Truncate(lat).ToString() + "x" + Truncate(lng).ToString();
 
         float x = GetObstacleUnityPosition().x;
         float z = GetObstacleUnityPosition().z;
-        string gps = GetObstacleGPS(lat, lng, x, z);
+
         var dis = GetObstacleDistance(x, z);
 
-        //Debug.Log("dis" + dis);
+        Debug.Log("dis" + dis);
         // 디비 데이터
         ObstacleData data = new ObstacleData
         {
-            Latitude = lat,
-            Longitude = lng,
-            position_x = x,
-            position_z = z,
+            Latitude = Math.Round(lat, 5),
+            Longitude = Math.Round(lng, 5),
+            position_x = Math.Round(x, 2),
+            position_z = Math.Round(z, 2),
             compass = CompassBehaviour.curr_compass,
-            obstacleDis = dis,
-            obGPS = gps
+            obstacleDis = Math.Round(dis, 2),
+            GPS = Math.Round(lat, 5).ToString() + "x" + Math.Round(lng, 5).ToString()
         };
-
-        Debug.Log("저장");
 
         db.Collection(collection).AddAsync(data).ContinueWithOnMainThread(task =>
         {
             DocumentReference addedDocRef = task.Result;
-            Debug.Log("success!");
+            Debug.Log("저장완료!");
         });
     }
 
-    public void QueryData()
+    public string GetCollection()
     {
-        float lat = GpsManager.current_Lat;
-        float lng = GpsManager.current_Long;
-        string collection = lat.ToString() + "x" + lng.ToString();
+        var lat = GpsManager.current_Lat;
+        var lng = GpsManager.current_Long;
+        string collection = Truncate(lat).ToString() + "x" + Truncate(lng).ToString();
+        Debug.Log("task 1");
+        return collection;
+    }
 
-        CollectionReference gpsRef = db.Collection(collection);
-        Query query = gpsRef.WhereEqualTo("obGPS", collection);
-        query.GetSnapshotAsync().ContinueWithOnMainThread((QuerySnapshotTask) =>
+    public string GetDocRef()
+    {
+        var lat = GpsManager.current_Lat;
+        var lng = GpsManager.current_Long;
+        string docRef = Math.Round(lat, 5).ToString()
+            + "x"
+            + Math.Round(lng, 5).ToString();
+        Debug.Log("task 2");
+        return docRef;
+    }
+
+    // 여기서 비동기가 되야함
+
+    public bool QueryData()
+    {
+
+        var check = false;
+        string collection = GetCollection();
+        string docRef = GetDocRef();
+
+
+        // 이건 무조건 참임
+        Query GPSQuery = db.Collection("37.334x127.096").WhereEqualTo("GPS", "1");
+
+        // 비동기 메서드
+
+        GPSQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
-            foreach (DocumentSnapshot doc in QuerySnapshotTask.Result.Documents)
+            QuerySnapshot GPSQuerySnapshot = task.Result;
+            foreach (DocumentSnapshot documentSnapshot in GPSQuerySnapshot.Documents)
             {
-                Debug.Log("FInd ");
-            }
+                    //Debug.Log(String.Format("Document data for {0} document:", documentSnapshot.Id));
+                    Debug.Log("task 3");
+                check = true;
+            };
         });
+        //Query GPSQuery = db.Collection(collection).WhereEqualTo("GPS", docRef);
+        //Debug.Log("collection Name : " + collection);
+        //Debug.Log("docRef : " + docRef);
+        //// 이게 안됨
+
+        //GPSQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        //{
+        //    QuerySnapshot GPSQuerySnapshot = task.Result;
+        //    foreach (DocumentSnapshot documentSnapshot in GPSQuerySnapshot.Documents)
+        //    {
+        //        Debug.Log(String.Format("Document data for {0} document:", documentSnapshot.Id));
+        //        check = true;
+        //    };
+        //});
+        return check;
     }
 
     private Vector3 GetObstacleUnityPosition()
@@ -86,22 +133,29 @@ public class DatabaseBehavior : MonoBehaviour
     {
         Vector3 pos = new Vector3(x, 0, z);
         Vector3 userPos = new Vector3(GetCameraPos._userPos.x, 0, GetCameraPos._userPos.z);
-        var dis = Math.Round(Vector3.Distance(pos, userPos),2);
+        var dis = Math.Round(Vector3.Distance(pos, userPos), 2);
         return (float)dis;
     }
 
-    private string GetObstacleGPS(float userLat, float userLng, float x, float z)
+    //private string GetObstacleGPS(float userLat, float userLng, float x, float z)
+    //{
+    //    int radius = CompassBehaviour._compass;
+    //    float disX = x * Mathf.Cos(radius);
+    //    float disZ = z * Mathf.Sin(radius);
+
+    //    float obLat = userLat + disX * 0.0001f;
+    //    float obLng = userLng + disZ * 0.0001f;
+
+    //    string gps = obLat.ToString() + "x" + obLng.ToString();
+
+    //    return gps;
+    //}
+
+    private float Truncate(double n)
     {
-        int radius = CompassBehaviour._compass;
-        float disX = x * Mathf.Cos(radius);
-        float disZ = z * Mathf.Sin(radius);
-
-        float obLat = userLat + disX;
-        float obLng = userLng + disZ;
-
-        string gps = obLat.ToString() + "x" + obLng.ToString();
-
-        return gps;
+        // 소수점 3자리 이하는 버림
+        n = Math.Truncate(n * 1000) / 1000;
+        return (float)n;
     }
 
 }
