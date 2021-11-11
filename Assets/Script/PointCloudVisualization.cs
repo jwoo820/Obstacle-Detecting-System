@@ -115,12 +115,4 @@ public class PointCloudVisualization : MonoBehaviour
         if (renderer != null)
             renderer.enabled = visible;
     }
-
-    async Task FirstTask()
-    {
-        await Task.Run(() =>
-        {
-            Debug.Log("hi");
-        });
-    }
 }
