@@ -41,19 +41,36 @@ public class ClassificationObstacle : MonoBehaviour
         if (initDelay)
         {
             _obstaclePointNum = PointCloudVisualization._obstaclePoints.Count;
-            if (isQuery)
+            if(_obstaclePointNum > criteria)
             {
-                StartCoroutine(SearchDB());
-                Debug.Log("3 seconds~~");
-
+                SearchObstacle();
             }
             else
             {
-                if (_obstaclePointNum > criteria)
+                if(isQuery)
                 {
-                    SearchObstacle();
+                    StartCoroutine(SearchDB());
+                    Debug.Log("wait for 3 seconds");
+                }
+                else
+                {
+                    Debug.Log("Wait for Query");
                 }
             }
+
+            //if (isQuery)
+            //{
+            //    StartCoroutine(SearchDB());
+            //    Debug.Log("3 seconds~~");
+
+            //}
+            //else
+            //{
+            //    if (_obstaclePointNum > criteria)
+            //    {
+            //        SearchObstacle();
+            //    }
+            //}
         }
     }
 
