@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Threading;
-
+using System;
 public class ClassificationObstacle : MonoBehaviour
 {
     private int _obstaclePointNum;
@@ -18,19 +18,61 @@ public class ClassificationObstacle : MonoBehaviour
 
     void Start()
     {
-        Database = new DatabaseBehavior();
-        AlertPanel = GameObject.Find("AlertPanel");
-        panelColor = GameObject.Find("AlertPanel").GetComponent<Image>();
-        AlertPanel.SetActive(false);
-        // criteria : 현재 프레임에서 feature point의 개수가 일정 이상일 때 장애물로 인식하기 위한 기준
-        criteria = 30;
-        StartCoroutine(InitDelay());
+        try
+        {
+            Database = new DatabaseBehavior();
+            AlertPanel = GameObject.Find("AlertPanel");
+            panelColor = GameObject.Find("AlertPanel").GetComponent<Image>();
+            AlertPanel.SetActive(false);
+            // criteria : 현재 프레임에서 feature point의 개수가 일정 이상일 때 장애물로 인식하기 위한 기준
+            criteria = 20;
+            StartCoroutine(InitDelay());
+        }
+        catch(NullReferenceException ex)
+        {
+            Debug.Log("NULL");
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateData();
+        if (initDelay)
+        {
+            _obstaclePointNum = PointCloudVisualization._obstaclePoints.Count;
+            if (isQuery)
+            {
+                StartCoroutine(SearchDB());
+                Debug.Log("3 seconds~~");
+
+            }
+            else
+            {
+                if (_obstaclePointNum > criteria)
+                {
+                    SearchObstacle();
+                }
+            }
+        }
+    }
+
+
+    IEnumerator SearchDB()
+    {
+        Database.QueryData();
+        isQuery = false;
+        if (DatabaseBehavior.querySuccess)
+        {
+            panelColor.color = new Color(1, 0, 0, 0.5f);
+            Handheld.Vibrate();
+            AlertPanel.SetActive(true);
+        }
+
+        DatabaseBehavior.querySuccess = false;
+        yield return new WaitForSeconds(3f);
+        AlertPanel.SetActive(false);
+        isQuery = true;
     }
 
     // 초기 5초 동안은 장애물 탐지 X 
@@ -46,50 +88,25 @@ public class ClassificationObstacle : MonoBehaviour
     IEnumerator SaveDataDelay()
     {
         yield return new WaitForSeconds(3f);
+        AlertPanel.SetActive(false);
         isSave = false;
     }
-    // 디비를 3초에 한번 씩 읽기
-    IEnumerator QueryDataDelay()
-    {
-        yield return new WaitForSeconds(3f);
-        isQuery = false;
-    }
 
-    private void UpdateData()
+    private void SearchObstacle()
     {
-        if (initDelay)
+        panelColor.color = new Color(1, 1, 0, 0.5f);
+        AlertPanel.SetActive(true);
+        Handheld.Vibrate();
+        if (!isSave)
         {
-            _obstaclePointNum = PointCloudVisualization._obstaclePoints.Count;
-           
-            if (isQuery)
-            {
-                panelColor.color = new Color(1, 0, 0, 0.5f);
-                AlertPanel.SetActive(true);
-                Handheld.Vibrate();
-                StartCoroutine(QueryDataDelay());
+            isSave = true;
+            Database.SaveData();
+            StartCoroutine(SaveDataDelay());
+        }
 
-                Database.QueryData();
-                StartCoroutine(QueryDataDelay());
-                AlertPanel.SetActive(false);
-            }
-            else if (_obstaclePointNum > criteria)
-            {
-                panelColor.color = new Color(1, 1, 0, 0.5f);
-                AlertPanel.SetActive(true);
-                // 휴대폰 진동
-                Handheld.Vibrate();
-                if (!isSave)
-                {
-                    isSave = true;
-                    Database.SaveData();
-                    StartCoroutine(SaveDataDelay());
-                }
-                else
-                {
-                    Debug.Log("Data Save wait 3 seconds!!");
-                }
-                AlertPanel.SetActive(false);
-            }
+        else
+        {
+            //Debug.Log("Data Save wait 3 seconds!!");
         }
     }
 }

@@ -8,7 +8,7 @@ using System;
 public class DatabaseBehavior : MonoBehaviour
 {
     FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-
+    public static bool querySuccess = false;
     public void SaveData()
     {
         var lat = GpsManager.current_Lat;
@@ -60,9 +60,6 @@ public class DatabaseBehavior : MonoBehaviour
 
     public void QueryData()
     {
-
-
-
         string collection = GetCollection();
         string docRef = GetDocRef();
 
@@ -73,6 +70,7 @@ public class DatabaseBehavior : MonoBehaviour
             foreach (DocumentSnapshot documentSnapshot in GPSQuerySnapshot.Documents)
             {
                 Debug.Log("Read Success");
+                querySuccess = true;
             };
         });
     }
@@ -114,5 +112,4 @@ public class DatabaseBehavior : MonoBehaviour
         n = Math.Truncate(n * 1000) / 1000;
         return (float)n;
     }
-
 }

@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c63a0fff9350445aaa209625cc297fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AlertPanel: {fileID: 4829040519815184973, guid: b12e21c79815549ffab8e6633991026b, type: 3}
+  AlertPanel: {fileID: 1324593053}
 --- !u!114 &1110920720
 MonoBehaviour:
   m_ObjectHideFlags: 0
