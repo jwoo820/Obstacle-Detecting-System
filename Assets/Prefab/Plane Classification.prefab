@@ -237,5 +237,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ARPlane: {fileID: 1612403317426024766}
-  _PlaneMeshRenderer: {fileID: 1612403317426024762}
-  _planeCenter: {x: 0, y: 0, z: 0}
+  _PlaneMeshRenderer: {fileID: 0}

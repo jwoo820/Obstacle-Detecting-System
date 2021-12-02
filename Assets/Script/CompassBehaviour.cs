@@ -27,7 +27,7 @@ public class CompassBehaviour : MonoBehaviour
             curr_compass = ((int)Input.compass.trueHeading).ToString() + "° " + DegreesToCardinalDetailed(Input.compass.trueHeading);
         }
     }
-
+    
     IEnumerator InitializeCompass()
     {
         yield return new WaitForSeconds(1f);

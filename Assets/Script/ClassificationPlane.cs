@@ -8,20 +8,16 @@ using System.Linq;
 public class ClassificationPlane : MonoBehaviour
 {
     public ARPlane _ARPlane;
-    // 색깔 변경
-    //public MeshRenderer _PlaneMeshRenderer;
-
+    public MeshRenderer _PlaneMeshRenderer;
     //public TextMesh _TextMesh;
-
     //public GameObject _Textobj;
-
     public LinkedList<float> _planeCenterList = new LinkedList<float>();
-    // 20cm 이상 떨어졌을 때 obstacle point로 정ㅖ
-    public static float _outlier = 0.15f;
+    // distance from ground
+    public static float _outlier = 0.3f;
     public static LinkedList<float> _yAxis = new LinkedList<float>();
     private static int _planeCenterCount = 100;
-    List<float> distinctList;
     private Vector3 _planeCenter = new Vector3();
+    // reference plane's y axis
     public static float _referenceY = 0;
     GameObject _mainCam;
 
@@ -42,17 +38,8 @@ public class ClassificationPlane : MonoBehaviour
         //Ransac();
     }
 
-    //void UpdateLabel()
-    //{
-    //    _TextMesh.text = _ARPlane.classification.ToString();
-    //    _Textobj.transform.position = _ARPlane.center;
-    //    _Textobj.transform.LookAt(_mainCam.transform);
-    //    _Textobj.transform.Rotate(new Vector3(0, 180, 0));
-    //}
-
     void UpdatePlaneCenter()
     {
-        // 지면 평면만 탐색하기
         if (_ARPlane.classification == PlaneClassification.Floor)
         {
             _planeCenter = _ARPlane.center;
@@ -91,7 +78,7 @@ public class ClassificationPlane : MonoBehaviour
                 break;
             case PlaneClassification.Wall:
                 planeMatColor = Color.white;
-                Debug.Log("Wall : " + _ARPlane.center);
+                //Debug.Log("Wall : " + _ARPlane.center);
                 break;
             case PlaneClassification.Floor:
                 planeMatColor = Color.green;
@@ -119,9 +106,10 @@ public class ClassificationPlane : MonoBehaviour
                 break;
         }
         planeMatColor.a = 0.33f;
-        //_PlaneMeshRenderer.material.color = planeMatColor;
+        _PlaneMeshRenderer.material.color = planeMatColor;
     }
 
+    // Ransac -> arcore algorithm
     void Ransac()
     {
         double c_max = 0;
@@ -153,7 +141,7 @@ public class ClassificationPlane : MonoBehaviour
             c_cnt = 0;
         }
     }
-
+    // arfoundation algorithm
     void ReferenceY()
     {
         float tmp_y = 0f;

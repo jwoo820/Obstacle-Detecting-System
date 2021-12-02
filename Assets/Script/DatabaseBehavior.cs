@@ -9,6 +9,7 @@ public class DatabaseBehavior : MonoBehaviour
 {
     FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
     public static bool querySuccess = false;
+
     public void SaveData()
     {
         var lat = GpsManager.current_Lat;
@@ -20,17 +21,15 @@ public class DatabaseBehavior : MonoBehaviour
 
         var dis = GetObstacleDistance(x, z);
 
-        Debug.Log("dis" + dis);
-        // 디비 데이터
         ObstacleData data = new ObstacleData
         {
-            Latitude = Math.Round(lat, 5),
-            Longitude = Math.Round(lng, 5),
+            Latitude = Math.Round(lat, 4),
+            Longitude = Math.Round(lng, 4),
             position_x = Math.Round(x, 2),
             position_z = Math.Round(z, 2),
-            compass = CompassBehaviour.curr_compass,
+            compass = CompassBehaviour._compass,
             obstacleDis = Math.Round(dis, 2),
-            GPS = Math.Round(lat, 5).ToString() + "x" + Math.Round(lng, 5).ToString()
+            GPS = Math.Round(lat, 4).ToString() + "x" + Math.Round(lng, 4).ToString()
         };
 
         db.Collection(collection).AddAsync(data).ContinueWithOnMainThread(task =>
@@ -52,9 +51,9 @@ public class DatabaseBehavior : MonoBehaviour
     {
         var lat = GpsManager.current_Lat;
         var lng = GpsManager.current_Long;
-        string docRef = Math.Round(lat, 5).ToString()
+        string docRef = Math.Round(lat, 4).ToString()
             + "x"
-            + Math.Round(lng, 5).ToString();
+            + Math.Round(lng, 4).ToString();
         return docRef;
     }
 
@@ -62,22 +61,28 @@ public class DatabaseBehavior : MonoBehaviour
     {
         string collection = GetCollection();
         string docRef = GetDocRef();
+        int userCom = CompassBehaviour._compass;
 
-        Query GPSQuery = db.Collection(collection).WhereEqualTo("GPS", docRef);
+        Query GPSQuery = db.Collection(collection)
+            .WhereEqualTo(collection, docRef);
+        Debug.Log("collection : " + collection);
+        Debug.Log("docref : " + docRef);
         GPSQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
+
             QuerySnapshot GPSQuerySnapshot = task.Result;
+
             foreach (DocumentSnapshot documentSnapshot in GPSQuerySnapshot.Documents)
             {
                 Debug.Log("Read Success");
                 querySuccess = true;
-            };
+            }
         });
+
     }
 
     private Vector3 GetObstacleUnityPosition()
     {
-        // 장애물의 중심 좌표
         var obstaclePointList = PointCloudVisualization._obstaclePoints;
         var count = obstaclePointList.Count;
         double Obstacle_x = 0;
@@ -97,18 +102,17 @@ public class DatabaseBehavior : MonoBehaviour
         return ObstaclePosition;
     }
 
-    // 장애물 거리 계산
+    // distance from obstacle
     private float GetObstacleDistance(float x, float z)
     {
         Vector3 pos = new Vector3(x, 0, z);
         Vector3 userPos = new Vector3(GetCameraPos._userPos.x, 0, GetCameraPos._userPos.z);
-        var dis = Math.Round(Vector3.Distance(pos, userPos), 2);
+        var dis = Math.Round(Vector3.Distance(pos,userPos), 2);
         return (float)dis;
     }
 
     private float Truncate(double n)
     {
-        // 소수점 3자리 이하는 버림
         n = Math.Truncate(n * 1000) / 1000;
         return (float)n;
     }

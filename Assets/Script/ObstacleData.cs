@@ -23,7 +23,7 @@ public struct ObstacleData
 
     [FirestoreProperty]
 
-    public string compass { get; set; }
+    public int compass { get; set; }
 
     [FirestoreProperty]
 

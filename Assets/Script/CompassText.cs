@@ -23,6 +23,8 @@ public class CompassText : MonoBehaviour
             + "\n Latitude : "
             + GpsManager.current_Lat
             +"\n Longitude : "
-            + GpsManager.current_Long;
+            + GpsManager.current_Long
+            +"\n Point Cloud : "
+            +ClassificationObstacle._obstaclePointNum;
     }
 }

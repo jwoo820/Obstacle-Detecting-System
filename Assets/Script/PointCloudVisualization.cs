@@ -17,27 +17,26 @@ public class PointCloudVisualization : MonoBehaviour
     static List<Vector3> _vertices = new List<Vector3>();
     public static List<Vector3> _obstaclePoints = new List<Vector3>();
     private float _criteria;
+
     void OnPointCloudChanged(ARPointCloudUpdatedEventArgs eventArgs)
     {
         var points = _vertices;
-        //var obstaclePoints = _obstaclePoints;
-
         points.Clear();
         _obstaclePoints.Clear();
-
         _criteria = ClassificationPlane._referenceY;
+
         if (_pointCloud.positions.HasValue)
         {
             foreach (var point in _pointCloud.positions.Value)
             {
-                if (CheckRoi.ROI(point))
+                if (CheckRoi.ObstacleCheck(point))
                 {
                     if (Mathf.Abs(_criteria - point.y) > ClassificationPlane._outlier)
                     {
                         _obstaclePoints.Add(point);
                     }
+                    _vertices.Add(point);
                 }
-                _vertices.Add(point);
             }
         }
 
@@ -51,19 +50,19 @@ public class PointCloudVisualization : MonoBehaviour
         for (int i = 0; i < numParticles; ++i)
         {
             if (Mathf.Abs(_criteria - points[i].y) > ClassificationPlane._outlier)
-            {  
+            {
                 _particles[i].startColor = obstacleColor;
                 _particles[i].startSize = size;
                 _particles[i].position = points[i];
                 _particles[i].remainingLifetime = 1f;
             }
-            else
-            {
-                _particles[i].startColor = color;
-                _particles[i].startSize = size;
-                _particles[i].position = points[i];
-                _particles[i].remainingLifetime = 1f;
-            }
+            //else
+            //{
+            //    _particles[i].startColor = color;
+            //    _particles[i].startSize = size;
+            //    _particles[i].position = points[i];
+            //    _particles[i].remainingLifetime = 1f;
+            //}
         }
 
         for (int i = numParticles; i < _numParticles; ++i)

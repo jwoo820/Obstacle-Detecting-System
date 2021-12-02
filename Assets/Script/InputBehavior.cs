@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-public class DetectedRange : MonoBehaviour
+
+public class InputBehavior : MonoBehaviour
 {
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -15,16 +14,5 @@ public class DetectedRange : MonoBehaviour
     void Update()
     {
         
-    }
-
-    private void getRange()
-    {
-
-    }
-
-    public void Range()
-    {
-        var radious = Convert.ToInt32(CompassBehaviour.curr_compass);
-
     }
 }
